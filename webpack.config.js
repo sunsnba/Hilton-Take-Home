@@ -1,45 +1,39 @@
-'use strict';
-const htmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
+const HtmlWebPackPlugin = require("html-webpack-plugin");
 
-const htmlWebpackConfig = new htmlWebpackPlugin({
-  template: __dirname + '/index.html',
-  filename: 'index.html',
-  inject: 'body'
+const htmlWebpackPlugin = new HtmlWebPackPlugin({
+  template: "./src/index.html",
+  filename: "./index.html"
 });
 
-const inputData = require('./data.json');
-
 module.exports = {
-  mode: 'development',
-    entry: './index.js',
-  output: {
-    path: path.resolve(__dirname, "build"),
-    filename: "bundle.js"
-},
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
+        use: {
+          loader: "babel-loader"
+        }
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-      },
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-
-      },
-    ],
+        use: [
+          {
+            loader: "style-loader"
+          },
+          {
+            loader: "css-loader",
+            options: {
+              modules: true,
+              importLoaders: 1,
+              localIdentName: "[name]_[local]_[hash:base64]",
+              sourceMap: true,
+              minimize: true
+            }
+          }
+        ]
+      }
+    ]
   },
-  devServer: {
-      contentBase: path.join(__dirname, "src"),
-      publicPath: "/build/",
-      hot: true,
-      port: 8082
-  },
-}
+  plugins: [htmlWebpackPlugin]
+};

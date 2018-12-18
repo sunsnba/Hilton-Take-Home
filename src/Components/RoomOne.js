@@ -6,7 +6,8 @@ class RoomOne extends React.Component {
     }
 
     render () {
+        return (
         <button>Scotty B</button>
+        )
     }
-
     export default RoomOne;
